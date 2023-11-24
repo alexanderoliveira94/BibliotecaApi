@@ -36,14 +36,24 @@ public class LivroService : ILivroService
 
     public async Task<Livro> AdicionarLivro(Livro livro)
     {
+
+        var livroExistente = await _context.Livros
+            .FirstOrDefaultAsync(x => x.Titulo == livro.Titulo);
+
+        if (livroExistente != null)
+        {
+
+            throw new InvalidOperationException("Já existe um livro deste em nosso registro.");
+        }
+
         _context.Livros.Add(livro);
         await _context.SaveChangesAsync();
         return livro;
     }
 
-    public async Task<bool> AtualizarLivro(int id, Livro livro)
+    public async Task<bool> AtualizarLivro(int IdLivro, Livro livro)
     {
-        if (id != livro.IdLivro)
+        if (IdLivro != livro.IdLivro)
             return false;
 
         _context.Entry(livro).State = EntityState.Modified;
@@ -54,7 +64,7 @@ public class LivroService : ILivroService
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!LivroExists(id))
+            if (!LivroExists(IdLivro))
                 return false;
 
             throw;
@@ -63,9 +73,9 @@ public class LivroService : ILivroService
         return true;
     }
 
-    public async Task<bool> DeletarLivro(int id)
+    public async Task<bool> DeletarLivro(int IdLivro)
     {
-        var livro = await _context.Livros.FindAsync(id);
+        var livro = await _context.Livros.FindAsync(IdLivro);
         if (livro == null)
             return false;
 
@@ -75,8 +85,8 @@ public class LivroService : ILivroService
         return true;
     }
 
-    private bool LivroExists(int id)
+    private bool LivroExists(int IdLivro)
     {
-        return _context.Livros.Any(e => e.IdLivro == id);
+        return _context.Livros.Any(e => e.IdLivro == IdLivro);
     }
 }

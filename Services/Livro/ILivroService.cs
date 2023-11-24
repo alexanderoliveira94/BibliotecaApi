@@ -5,9 +5,9 @@ using BibliotecaApi.Models;
 public interface ILivroService
 {
     Task<IEnumerable<Livro>> ObterTodosLivros();
-    Task<Livro> ObterLivroPorId(int id);
+    Task<Livro> ObterLivroPorId(int IdLivro);
     Task<IEnumerable<Livro>> BuscarLivros(string termoBusca);
     Task<Livro> AdicionarLivro(Livro livro);
-    Task<bool> AtualizarLivro(int id, Livro livro);
-    Task<bool> DeletarLivro(int id);
+    Task<bool> AtualizarLivro(int IdLivro, Livro livro);
+    Task<bool> DeletarLivro(int IdLivro);
 }

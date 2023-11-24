@@ -10,11 +10,11 @@ namespace BibliotecaApi.Models
     public class Livro
     {   
         [Key]
-        [JsonIgnore]
+        
         public int IdLivro { get; set; }
         public string Titulo { get; set; } = string.Empty;
         public string Autor { get; set; } = string.Empty;
         public string Categoria { get; set; } = string.Empty;
-        public bool EstaDisponivel { get; set; } 
+        public bool EstaDisponivel { get; set; }
     }
 }

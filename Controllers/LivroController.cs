@@ -22,9 +22,9 @@ namespace BibliotecaApi.Controllers
         }
 
         [HttpGet("obterLivroPorid")]
-        public async Task<ActionResult<Livro>> ObterLivroPorId(int id)
+        public async Task<ActionResult<Livro>> ObterLivroPorId(int IdLivro)
         {
-            var livro = await _livroService.ObterLivroPorId(id);
+            var livro = await _livroService.ObterLivroPorId(IdLivro);
 
             if (livro == null)
                 return NotFound();
@@ -46,24 +46,25 @@ namespace BibliotecaApi.Controllers
         [HttpPost("adicionarLivro")]
         public async Task<ActionResult<Livro>> AdicionarLivro(Livro livro)
         {
+            livro.EstaDisponivel = true;
             var novoLivro = await _livroService.AdicionarLivro(livro);
-            return CreatedAtAction(nameof(ObterLivroPorId), new { id = novoLivro.IdLivro }, novoLivro);
+            return CreatedAtAction(nameof(ObterLivroPorId), new { IdLivro = novoLivro.IdLivro }, novoLivro);
         }
 
-        [HttpPut("atualizarLivroPorId/{id}")]
-        public async Task<IActionResult> AtualizarLivro(int id, Livro livroAtualizado)
+        [HttpPut("atualizarLivroPorId/{IdLivro}")]
+        public async Task<IActionResult> AtualizarLivro(int IdLivro, Livro livroAtualizado)
         {
-            var livro = await _livroService.ObterLivroPorId(id);
+            var livro = await _livroService.ObterLivroPorId(IdLivro);
 
             if (livro == null)
                 return NotFound();
 
-            
+
             livro.Autor = livroAtualizado.Autor;
             livro.Categoria = livroAtualizado.Categoria;
             livro.Titulo = livroAtualizado.Titulo;
 
-            var sucesso = await _livroService.AtualizarLivro(id, livro);
+            var sucesso = await _livroService.AtualizarLivro(IdLivro, livro);
 
             if (!sucesso)
                 return BadRequest();
@@ -71,10 +72,10 @@ namespace BibliotecaApi.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletarLivro(int id)
+        [HttpDelete("{IdLivro}")]
+        public async Task<IActionResult> DeletarLivro(int IdLivro)
         {
-            var sucesso = await _livroService.DeletarLivro(id);
+            var sucesso = await _livroService.DeletarLivro(IdLivro);
 
             if (!sucesso)
                 return NotFound();
