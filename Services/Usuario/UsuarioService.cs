@@ -19,9 +19,9 @@ public class UsuarioService : IUsuarioService
         return await _context.Usuarios.ToListAsync();
     }
 
-    public async Task<Usuario> ObterUsuarioPorId(int id)
+    public async Task<Usuario> ObterUsuarioPorId(int IdUsuario)
     {
-        return await _context.Usuarios.FindAsync(id);
+        return await _context.Usuarios.FindAsync(IdUsuario);
     }
 
     public async Task<Usuario> AdicionarUsuario(Usuario usuario)
@@ -47,9 +47,9 @@ public class UsuarioService : IUsuarioService
     }
 
 
-    public async Task<bool> AtualizarUsuario(int id, Usuario usuario)
+    public async Task<bool> AtualizarUsuario(int IdUsuario, Usuario usuario)
     {
-        if (id != usuario.IdUsuario)
+        if (IdUsuario != usuario.IdUsuario)
             return false;
 
         _context.Entry(usuario).State = EntityState.Modified;
@@ -65,7 +65,7 @@ public class UsuarioService : IUsuarioService
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!UsuarioExists(id))
+            if (!UsuarioExists(IdUsuario))
                 return false;
 
             throw;
@@ -74,9 +74,9 @@ public class UsuarioService : IUsuarioService
         return true;
     }
 
-    public async Task<bool> DeletarUsuario(int id)
+    public async Task<bool> DeletarUsuario(int IdUsuario)
     {
-        var usuario = await _context.Usuarios.FindAsync(id);
+        var usuario = await _context.Usuarios.FindAsync(IdUsuario);
         if (usuario == null)
             return false;
 
@@ -86,8 +86,8 @@ public class UsuarioService : IUsuarioService
         return true;
     }
 
-    private bool UsuarioExists(int id)
+    private bool UsuarioExists(int IdUsuario)
     {
-        return _context.Usuarios.Any(e => e.IdUsuario == id);
+        return _context.Usuarios.Any(e => e.IdUsuario == IdUsuario);
     }
 }

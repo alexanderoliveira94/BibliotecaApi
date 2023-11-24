@@ -23,10 +23,10 @@ namespace BibliotecaApi.Controllers
             return Ok(await _usuarioService.ObterTodosUsuarios());
         }
 
-        [HttpGet("obterUsuarioPorId/{id}")]
-        public async Task<ActionResult<Usuario>> ObterUsuarioPorId(int id)
+        [HttpGet("obterUsuarioPorId/{IdUsuario}")]
+        public async Task<ActionResult<Usuario>> ObterUsuarioPorId(int IdUsuario)
         {
-            var usuario = await _usuarioService.ObterUsuarioPorId(id);
+            var usuario = await _usuarioService.ObterUsuarioPorId(IdUsuario);
 
             if (usuario == null)
                 return NotFound();
@@ -38,20 +38,20 @@ namespace BibliotecaApi.Controllers
         public async Task<ActionResult<Usuario>> AdicionarUsuario(Usuario usuario)
         {
             var novoUsuario = await _usuarioService.AdicionarUsuario(usuario);
-            return CreatedAtAction(nameof(ObterUsuarioPorId), new { id = novoUsuario.IdUsuario }, novoUsuario);
+            return CreatedAtAction(nameof(ObterUsuarioPorId), new { IdUsuario = novoUsuario.IdUsuario }, novoUsuario);
         }
 
-        [HttpPut("atualizarUsuario/{id}")]
-        public async Task<IActionResult> AtualizarUsuario(int id, Usuario usuarioAtualizado)
+        [HttpPut("atualizarUsuario/{IdUsuario}")]
+        public async Task<IActionResult> AtualizarUsuario(int IdUsuario, Usuario usuarioAtualizado)
         {
-            var usuario = await _usuarioService.ObterUsuarioPorId(id);
+            var usuario = await _usuarioService.ObterUsuarioPorId(IdUsuario);
 
             if (usuario == null)
                 return NotFound();
 
             usuario.NomeUsuario = usuarioAtualizado.NomeUsuario;
 
-            var sucesso = await _usuarioService.AtualizarUsuario(id, usuario);
+            var sucesso = await _usuarioService.AtualizarUsuario(IdUsuario, usuario);
 
             if (!sucesso)
                 return BadRequest();
@@ -59,10 +59,10 @@ namespace BibliotecaApi.Controllers
             return NoContent();
         }
 
-        [HttpDelete("deletarUsuario/{id}")]
-        public async Task<IActionResult> DeletarUsuario(int id)
+        [HttpDelete("{IdUsuario}")]
+        public async Task<IActionResult> DeletarUsuario(int IdUsuario)
         {
-            var sucesso = await _usuarioService.DeletarUsuario(id);
+            var sucesso = await _usuarioService.DeletarUsuario(IdUsuario);
 
             if (!sucesso)
                 return NotFound();

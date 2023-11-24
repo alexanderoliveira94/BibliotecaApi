@@ -10,7 +10,6 @@ namespace BibliotecaApi.Models
     public class Usuario
     {
         [Key]
-        [JsonIgnore]
         public int IdUsuario { get; set; }
         public string NomeUsuario { get; set; } = string.Empty;
         

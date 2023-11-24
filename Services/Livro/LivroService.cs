@@ -19,9 +19,9 @@ public class LivroService : ILivroService
         return await _context.Livros.ToListAsync();
     }
 
-    public async Task<Livro> ObterLivroPorId(int id)
+    public async Task<Livro> ObterLivroPorId(int IdLivro)
     {
-        return await _context.Livros.FindAsync(id);
+        return await _context.Livros.FindAsync(IdLivro);
     }
 
     public async Task<IEnumerable<Livro>> BuscarLivros(string termoBusca)
