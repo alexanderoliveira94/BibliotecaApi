@@ -52,13 +52,15 @@ public class UsuarioService : IUsuarioService
         if (IdUsuario != usuario.IdUsuario)
             return false;
 
+        // Verificar se já existe um usuário com o mesmo nome
+        if (_context.Usuarios.Any(u => u.IdUsuario != IdUsuario && u.NomeUsuario == usuario.NomeUsuario))
+        {
+            // Já existe um usuário com o mesmo nome
+            return false;
+        }
+
         _context.Entry(usuario).State = EntityState.Modified;
 
-        if (_context.Usuarios.Any(u => u.NomeUsuario == usuario.NomeUsuario))
-            {
-                throw new InvalidOperationException("Usuário já cadastrado.");
-            }
-            
         try
         {
             await _context.SaveChangesAsync();
@@ -73,6 +75,7 @@ public class UsuarioService : IUsuarioService
 
         return true;
     }
+
 
     public async Task<bool> DeletarUsuario(int IdUsuario)
     {

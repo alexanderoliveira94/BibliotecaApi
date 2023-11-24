@@ -7,16 +7,16 @@ namespace BibliotecaApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class EmprestimosController : ControllerBase
+    public class EmprestimoController : ControllerBase
     {
         private readonly IEmprestimoService _emprestimoService;
 
-        public EmprestimosController(IEmprestimoService emprestimoService)
+        public EmprestimoController(IEmprestimoService emprestimoService)
         {
             _emprestimoService = emprestimoService;
         }
 
-        [HttpGet]
+        [HttpGet("obterTodosOsEmprestimos")]
         public async Task<ActionResult<IEnumerable<EmprestismoDeLivros>>> ObterTodosEmprestimos()
         {
             return Ok(await _emprestimoService.ObterTodosEmprestimos());

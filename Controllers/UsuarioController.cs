@@ -54,10 +54,11 @@ namespace BibliotecaApi.Controllers
             var sucesso = await _usuarioService.AtualizarUsuario(IdUsuario, usuario);
 
             if (!sucesso)
-                return BadRequest();
+                return BadRequest("O nome do usuário já esta cadastrado.");
 
             return NoContent();
         }
+
 
         [HttpDelete("{IdUsuario}")]
         public async Task<IActionResult> DeletarUsuario(int IdUsuario)
