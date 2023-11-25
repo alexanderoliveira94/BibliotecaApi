@@ -23,26 +23,26 @@ namespace BibliotecaApi.Controllers
         }
 
         [HttpGet("obterEmprestimosPorUsuario/{idUsuario}")]
-        public async Task<ActionResult<IEnumerable<EmprestismoDeLivros>>> ObterEmprestimosPorUsuario(int idUsuario)
+        public async Task<ActionResult<IEnumerable<EmprestismoDeLivros>>> ObterEmprestimosPorUsuario(int IdUsuario)
         {
-            return Ok(await _emprestimoService.ObterEmprestimosPorUsuario(idUsuario));
+            return Ok(await _emprestimoService.ObterEmprestimosPorUsuario(IdUsuario));
         }
 
         [HttpPost("realizarEmprestimo")]
-        public async Task<ActionResult<EmprestismoDeLivros>> RealizarEmprestimo(int idLivro, int idUsuario)
+        public async Task<ActionResult<EmprestismoDeLivros>> RealizarEmprestimo(int IdLivro, int IdUsuario)
         {
-            var emprestimo = await _emprestimoService.RealizarEmprestimo(idLivro, idUsuario);
+            var emprestimo = await _emprestimoService.RealizarEmprestimo(IdLivro, IdUsuario);
 
             if (emprestimo == null)
                 return BadRequest();
 
-            return CreatedAtAction(nameof(ObterEmprestimosPorUsuario), new { idUsuario = emprestimo.IdUsuario }, emprestimo);
+            return CreatedAtAction(nameof(ObterEmprestimosPorUsuario), new { IdUsuario = emprestimo.IdUsuario }, emprestimo);
         }
 
-        [HttpPut("realizarDevolucao/{idTransacao}")]
-        public async Task<IActionResult> RealizarDevolucao(int idTransacao)
+        [HttpPut("realizarDevolucao/{IdTransacao}")]
+        public async Task<IActionResult> RealizarDevolucao(int IdTransacao)
         {
-            var sucesso = await _emprestimoService.RealizarDevolucao(idTransacao);
+            var sucesso = await _emprestimoService.RealizarDevolucao(IdTransacao);
 
             if (!sucesso)
                 return BadRequest();

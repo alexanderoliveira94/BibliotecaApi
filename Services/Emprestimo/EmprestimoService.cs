@@ -25,46 +25,58 @@ namespace BibliotecaApi.Services.Emprestimo
                 .ToListAsync();
         }
 
-        public async Task<EmprestismoDeLivros> RealizarEmprestimo(int idLivro, int idUsuario)
+        public async Task<EmprestismoDeLivros> RealizarEmprestimo(int IdLivro, int IdUsuario)
         {
-            var livro = await _context.Livros.FindAsync(idLivro);
-
-            if (livro == null)
+            try
             {
+                var livro = await _context.Livros.FindAsync(IdLivro);
 
-                throw new InvalidOperationException("Livro não Existe Cadastrado.");
+                Console.WriteLine($"ID Livro: {IdLivro}, ID Usuário: {IdUsuario}");
+
+                if (livro == null)
+                {
+
+                    throw new InvalidOperationException("Livro não Existe Cadastrado.");
+                }
+
+                if (!livro.EstaDisponivel)
+                {
+
+                    throw new InvalidOperationException("Livro não está disponível para empréstimo.");
+                }
+
+
+                livro.EstaDisponivel = false;
+
+                var emprestimo = new EmprestismoDeLivros
+                {
+                    IdLivro = IdLivro,
+                    IdUsuario = IdUsuario,
+                    DataEmprestimo = DateTime.Now,
+                    DataDevolucaoPrevista = DateTime.Now.AddDays(7),
+                };
+
+                _context.Emprestismos.Add(emprestimo);
+                await _context.SaveChangesAsync();
+
+                return emprestimo;
             }
 
-            if (!livro.EstaDisponivel)
+            catch (Exception ex)
             {
-
-                throw new InvalidOperationException("Livro não está disponível para empréstimo.");
+                // Adicione logs para registrar exceções
+                Console.WriteLine($"Erro ao realizar o empréstimo: {ex.Message}");
+                throw; // Rejogue a exceção para manter o comportamento original
             }
-
-
-            livro.EstaDisponivel = false;
-
-            var emprestimo = new EmprestismoDeLivros
-            {
-                IdLivro = idLivro,
-                IdUsuario = idUsuario,
-                DataEmprestimo = DateTime.Now,
-                DataDevolucaoPrevista = DateTime.Now.AddDays(7),
-            };
-
-            _context.Emprestismos.Add(emprestimo);
-            await _context.SaveChangesAsync();
-
-            return emprestimo;
         }
 
-        public async Task<bool> RealizarDevolucao(int idTransacao)
+        public async Task<bool> RealizarDevolucao(int IdTransacao)
         {
-            var emprestimo = await _context.Emprestismos.FindAsync(idTransacao);
+            var emprestimo = await _context.Emprestismos.FindAsync(IdTransacao);
 
             if (emprestimo == null || emprestimo.DataDevolucaoRealizada.HasValue)
             {
-                
+
                 return false;
             }
 
