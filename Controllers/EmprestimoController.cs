@@ -31,12 +31,15 @@ namespace BibliotecaApi.Controllers
         [HttpPost("realizarEmprestimo")]
         public async Task<ActionResult<EmprestismoDeLivros>> RealizarEmprestimo(int IdLivro, int IdUsuario)
         {
-            var emprestimo = await _emprestimoService.RealizarEmprestimo(IdLivro, IdUsuario);
-
-            if (emprestimo == null)
-                return BadRequest();
-
-            return CreatedAtAction(nameof(ObterEmprestimosPorUsuario), new { IdUsuario = emprestimo.IdUsuario }, emprestimo);
+            try
+            {
+                var emprestimo = await _emprestimoService.RealizarEmprestimo(IdLivro, IdUsuario);
+                return CreatedAtAction(nameof(ObterEmprestimosPorUsuario), new { IdUsuario = emprestimo.IdUsuario }, emprestimo);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("realizarDevolucao/{IdTransacao}")]

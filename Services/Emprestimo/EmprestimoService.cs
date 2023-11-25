@@ -31,20 +31,17 @@ namespace BibliotecaApi.Services.Emprestimo
             {
                 var livro = await _context.Livros.FindAsync(IdLivro);
 
-                Console.WriteLine($"ID Livro: {IdLivro}, ID Usuário: {IdUsuario}");
+                Console.WriteLine($"Recebendo solicitação para realizar empréstimo - ID Livro: {IdLivro}, ID Usuário: {IdUsuario}");
 
                 if (livro == null)
                 {
-
                     throw new InvalidOperationException("Livro não Existe Cadastrado.");
                 }
 
                 if (!livro.EstaDisponivel)
                 {
-
                     throw new InvalidOperationException("Livro não está disponível para empréstimo.");
                 }
-
 
                 livro.EstaDisponivel = false;
 
@@ -59,14 +56,14 @@ namespace BibliotecaApi.Services.Emprestimo
                 _context.Emprestismos.Add(emprestimo);
                 await _context.SaveChangesAsync();
 
+                Console.WriteLine($"Enviando solicitação para API - ID Livro: {IdLivro}, ID Usuário: {IdUsuario}");
+
                 return emprestimo;
             }
-
             catch (Exception ex)
             {
-                // Adicione logs para registrar exceções
                 Console.WriteLine($"Erro ao realizar o empréstimo: {ex.Message}");
-                throw; // Rejogue a exceção para manter o comportamento original
+                throw;
             }
         }
 
