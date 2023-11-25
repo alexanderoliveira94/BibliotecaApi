@@ -10,7 +10,7 @@ namespace BibliotecaApi.Models
     public class HistoricoEmprestimo
     {
         [Key]
-        [JsonIgnore]
+        
         public int IdUsuario { get; set; }
         public List<HistoricoEmprestimo> ?ListaDeEmprestimo { get; set; }
     }

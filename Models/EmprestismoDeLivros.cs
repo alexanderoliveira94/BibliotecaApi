@@ -10,7 +10,7 @@ namespace BibliotecaApi.Models
     public class EmprestismoDeLivros
     {
         [Key]
-        [JsonIgnore]
+       
         public int IdTransacao { get; set; }
         public int IdLivro { get; set; }
         public int IdUsuario { get; set; }
