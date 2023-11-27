@@ -28,8 +28,9 @@ A Biblioteca API é a parte backend do projeto Biblioteca Mvc App, desenvolvido 
 
 1. Clone este repositório.
 2. Certifique-se de ter o ASP.NET Core SDK instalado em sua máquina.
-3. Configure as informações do banco de dados no arquivo de configuração.
+3. O banco de dados já está configurado e hospedado no somee não havendo necessidades de configurações adicionais.
 4. Execute o comando `dotnet run` para iniciar o servidor.
+5. Caso queira usar o Swagger acesse http://localhost:5175/swagger com a api em execução.
 
 ## Contribuição
 
